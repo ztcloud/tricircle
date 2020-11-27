@@ -1,0 +1,45 @@
+#
+# Sample DevStack local.conf.
+#
+# This sample file is intended to be used for your typical Tricircle DevStack
+# multi-node environment. As this file has configuration values for DevStack
+# to result in RegionTwo running original Nova, Cinder and Neutron, and
+# the local Neutron will be configured with Tricircle Local Neutron Plugin
+# to work with central Neutron with Tricircle Central Neutron Plugin.
+#
+# This file works with local.conf.node_1.sample to help you build a two-node
+# three-region environment(CentralRegion, RegionOne and RegionTwo). Keystone in
+# RegionOne is shared by services in all the regions.
+#
+# Some options need to be changed to adapt to your environment, see README.rst
+# for detail.
+#
+
+[[local|localrc]]
+
+DATABASE_PASSWORD=password
+RABBIT_PASSWORD=password
+SERVICE_PASSWORD=password
+SERVICE_TOKEN=password
+ADMIN_PASSWORD=password
+
+HOST_IP=10.250.201.25
+REGION_NAME=RegionTwo
+KEYSTONE_REGION_NAME=RegionOne
+SERVICE_HOST=$HOST_IP
+KEYSTONE_SERVICE_HOST=10.250.201.24
+KEYSTONE_AUTH_HOST=10.250.201.24
+
+Q_ML2_PLUGIN_VLAN_TYPE_OPTIONS=(network_vlan_ranges=bridge:2001:3000,extern:3001:4000)
+OVS_BRIDGE_MAPPINGS=bridge:br-vlan,extern:br-ext
+
+# Specify Central Region name
+# CENTRAL_REGION_NAME=CentralRegion
+
+# Specify port for central Neutron server
+# TRICIRCLE_NEUTRON_PORT=20001
+
+TRICIRCLE_START_SERVICES=False
+enable_plugin tricircle https://github.com/openstack/tricircle/
+
+disable_service horizon
